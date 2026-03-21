@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
-import Navbar from './components/Navbar.jsx'
-import NotFountPage from './pages/NotFountPage.jsx'
-import SignUpPage from './pages/SignUpPage.jsx'
-import LoginPage from './pages/LoginPage.jsx'
-import SettingsPage from './pages/SettingsPage.jsx'
-import Home from './pages/Home.jsx'
-import ProfilePage from './pages/ProfilePage.jsx'
+import Navbar from './components/Navbar.js'
+import NotFountPage from './pages/NotFountPage.js'
+import SignUpPage from './pages/SignUpPage.js'
+import LoginPage from './pages/LoginPage.js'
+import SettingsPage from './pages/SettingsPage.js'
+import Home from './pages/Home.js'
+import ProfilePage from './pages/ProfilePage.js'
 import { Route, Routes } from "react-router-dom"
 import { useAuthStore } from "./store/useAuthStore.js"
-import SignedInLayout from "./layout/SignedInLayout.jsx"
-import SignedOutLayout from "./layout/SignedOutLayout.jsx"
+import SignedInLayout from "./layout/SignedInLayout.js"
+import SignedOutLayout from "./layout/SignedOutLayout.js"
 import { Toaster } from "react-hot-toast"
 import { useThemeStore } from "./store/useThemeStore.js"
 
@@ -34,7 +34,7 @@ const {theme}=useThemeStore()
         <Route path='/settings' element={<SettingsPage />} />
 
         <Route element={<SignedInLayout />}>
-          <Route path='/' element={<Home />} />
+          <Route path='/' element={<Home/>} />
           <Route path='/profile' element={<ProfilePage />} />
         </Route>
 

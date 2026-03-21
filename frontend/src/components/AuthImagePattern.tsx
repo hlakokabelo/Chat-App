@@ -1,4 +1,9 @@
-const AuthImagePattern = ({ title, subtitle }) => {
+interface IAuthImagePattern {
+  title: string;
+  subtitle: string;
+}
+
+const AuthImagePattern = ({ title, subtitle }: IAuthImagePattern) => {
   return (
     <div className="hidden lg:flex items-center justify-center bg-base-200 p-12">
       <div className="max-w-md text-center">
@@ -6,8 +11,9 @@ const AuthImagePattern = ({ title, subtitle }) => {
           {[...Array(9)].map((_, i) => (
             <div
               key={i}
-              className={`aspect-square rounded-2xl bg-primary/10 ${i % 2 === 0 ? "animate-pulse" : ""
-                }`}
+              className={`aspect-square rounded-2xl bg-primary/10 ${
+                i % 2 === 0 ? "animate-pulse" : ""
+              }`}
             />
           ))}
         </div>

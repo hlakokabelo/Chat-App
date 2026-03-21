@@ -24,13 +24,13 @@ export const getMessages = async (req, res) => {
 
     //get messages where i am the sender or I am the reciever
     const messages = await Message.find({
-      $0r: [
+      $or: [
         { senderId: myId, receiverId: friendId },
         { senderId: friendId, receiverId: myId },
       ],
     });
 
-    res.json(200).json(messages);
+    res.json(messages);
   } catch (error) {
     console.error("Error in getMessages:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -40,25 +40,28 @@ export const getMessages = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
-    const { id: recieverId } = req.params;
-    const { id: senderId } = req.user._id;
+    const { id: receiverId } = req.params;
+    const senderId = req.user.id;
+
+    if (!text && !image)
+      return res.status(400).json({ message: "Text/image is required." });
 
     let imageUrl;
     if (image) {
-      const uploadResponse = await cloudinary.uploader.upload(profilePic);
+      const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
 
     const newMessage = new Message({
       senderId,
-      recieverId,
+      receiverId,
       text,
       image: imageUrl,
     });
 
     await newMessage.save();
 
-    res.json(201).json(newMessage);
+    res.status(201).json(newMessage);
   } catch (error) {
     console.error("Error in SendMessages controller:", error);
     res.status(500).json({ error: "Internal server error" });
