@@ -1,1 +1,1 @@
-export const appName=chatty
+export const appName="chatty"
