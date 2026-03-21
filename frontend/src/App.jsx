@@ -11,10 +11,11 @@ import { useAuthStore } from "./store/useAuthStore.js"
 import SignedInLayout from "./layout/SignedInLayout.jsx"
 import SignedOutLayout from "./layout/SignedOutLayout.jsx"
 import { Toaster } from "react-hot-toast"
+import { useThemeStore } from "./store/useThemeStore.js"
 
 function App() {
   const { authUser, isCheckingAuth, checkAuth } = useAuthStore()
-
+const {theme}=useThemeStore()
   useEffect(() => {
     checkAuth();
   }, [checkAuth])
@@ -26,7 +27,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div data-theme={theme} className="min-h-screen"> 
       <Navbar />
       <Toaster />
       <Routes>

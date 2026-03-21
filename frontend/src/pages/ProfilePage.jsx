@@ -5,6 +5,7 @@ import { Camera, Mail, User } from "lucide-react";
 const ProfilePage = () => {
     const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
     const [selectedImg, setSelectedImg] = useState(null);
+    const [imgSize, setImgSize] = useState('size-32');
 
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
@@ -38,8 +39,8 @@ const ProfilePage = () => {
                             <img
                                 src={selectedImg || authUser.profilePic || "/avatar.png"}
                                 alt="Profile"
-                                className="size-32 rounded-full object-cover border-4 "
-                            />
+                                onClick={() => setImgSize((prev) => imgSize === 'size-32' ? 'size-111' : 'size-32')}
+                                className={`${imgSize} rounded-full object-cover border-4 `} />
                             <label
                                 htmlFor="avatar-upload"
                                 className={`
@@ -54,7 +55,7 @@ const ProfilePage = () => {
                                 <input
                                     type="file"
                                     id="avatar-upload"
-                                    className="hidden"
+                                    className="hidden "
                                     accept="image/*"
                                     onChange={handleImageUpload}
                                     disabled={isUpdatingProfile}
