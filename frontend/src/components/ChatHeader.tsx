@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
+import { AvatarSiderBar } from "./AvatarPlaceHolder";
 
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
@@ -12,12 +13,7 @@ const ChatHeader = () => {
         <div className="flex items-center gap-3">
           {/* Avatar */}
           <div className="avatar">
-            <div className="size-10 rounded-full relative">
-              <img
-                src={selectedUser?.profilePic || "/avatar.png"}
-                alt={selectedUser?.fullName}
-              />
-            </div>
+            <AvatarSiderBar user={selectedUser!} />
           </div>
 
           {/* User info */}
@@ -32,7 +28,7 @@ const ChatHeader = () => {
         </div>
 
         {/* Close button */}
-        <button onClick={() => setSelectedUser(null)}>
+        <button className="cursor-pointer" onClick={() => setSelectedUser(null)}>
           <X />
         </button>
       </div>
