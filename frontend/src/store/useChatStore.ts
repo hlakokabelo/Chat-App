@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import type { Message, UserType } from "../util/types";
+import { useAuthStore } from "./useAuthStore";
 
 interface IChatStore {
   messages: Message[];
@@ -14,6 +15,8 @@ interface IChatStore {
   sendMessage: (messageData: any) => Promise<void>;
   getMessages: (userId: string) => Promise<void>;
   setSelectedUser: (user: UserType | null) => void;
+  subScribeToMessages: () => void;
+  unSubScribeFromMessages: () => void;
 }
 
 export const useChatStore = create<IChatStore>((set, get) => ({
@@ -67,6 +70,27 @@ export const useChatStore = create<IChatStore>((set, get) => ({
       set({ isMessagesLoading: false });
     }
   },
+  subScribeToMessages: () => {
+    //gets current value, socket val won't
+    //change. if socket is updated
 
+    const { selectedUser } = get();
+    if (!selectedUser) return;
+
+    const socket = useAuthStore.getState().socket;
+
+    socket?.on("newMessage", (newMessage) => {
+      const isMsgSentFromSelUser =
+        newMessage.senderId === selectedUser._id;
+      if (!isMsgSentFromSelUser) return;
+
+      set({ messages: [...get().messages, newMessage] });
+    });
+  },
+  unSubScribeFromMessages: () => {
+    const socket = useAuthStore.getState().socket;
+
+    socket?.off("newMessage");
+  },
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
