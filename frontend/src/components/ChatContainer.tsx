@@ -41,7 +41,8 @@ const ChatContainer = () => {
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages?.length&&messages?.length > 0 &&
+        {messages?.length &&
+          messages?.length > 0 &&
           messages?.map((message, index) => {
             const isLast = index === messages.length - 1;
 
@@ -56,17 +57,23 @@ const ChatContainer = () => {
                     : selectedUser && <AvatarChat user={selectedUser} />}
                 </div>
                 <div className="chat-header mb-1">
-                  <time className="text-xs opacity-50 ml-1">
+                  <time className={`"text-xs opacity-50 ml-1`}>
                     {message?.createdAt &&
                       formatMessageTime(message?.createdAt)}
                   </time>
                 </div>
-                <div className="chat-bubble flex flex-col max-w-100">
+
+                <div
+                  className={`
+                        chat-bubble flex flex-col max-w-100
+                          ${isMyMessage(message.senderId) ? "bg-primary text-primary-content" : "bg-base-200"}
+                        `}
+                >
                   {message.image && (
                     <img
                       src={message.image}
                       alt="Attachment"
-                      className="sm:max-w-60 rounded-md mb-2"
+                      className="sm:max-w-60 rounded-md"
                     />
                   )}
                   {message.text && <p>{message.text}</p>}

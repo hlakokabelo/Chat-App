@@ -3,8 +3,8 @@ import { Send } from "lucide-react";
 import { useThemeStore } from "../store/useThemeStore";
 
 const PREVIEW_MESSAGES = [
-  { id: 1, content: "Hey! How's it going?", isSent: false },
-  { id: 2, content: "I'm doing great! Just working on some new features.", isSent: true },
+  { time:"12:00",id: 1, content: "Hey! How's it going?", isSent: false },
+  { time:"14:00",id: 2, content: "I'm doing great! Just working on some new features.", isSent: true },
 ];
 
 const SettingsPage = () => {
@@ -44,7 +44,7 @@ const SettingsPage = () => {
         </div>
 
         {/* Preview Section */}
-        <h3 className="text-lg font-semibold mb-3">Preview</h3>
+        <h3 className="text-lg font-semibold mb-3">Chat Preview</h3>
         <div className="rounded-xl border border-base-300 overflow-hidden bg-base-100 shadow-lg">
           <div className="p-4 bg-base-200">
             <div className="max-w-lg mx-auto">
@@ -83,7 +83,7 @@ const SettingsPage = () => {
                             ${message.isSent ? "text-primary-content/70" : "text-base-content/70"}
                           `}
                         >
-                          12:00 PM
+                          {message.time}
                         </p>
                       </div>
                     </div>

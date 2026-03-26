@@ -27,9 +27,9 @@ function App() {
       </div>
     );
   }
-  console.log({onlineUsers});
+  console.log({ onlineUsers });
   return (
-    <div data-theme={theme} className="min-h-screen">
+    <div data-theme={theme} className="overflow-auto">
       <Navbar />
       <Toaster />
       <Routes>
