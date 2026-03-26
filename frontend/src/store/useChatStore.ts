@@ -1,96 +1,44 @@
-import toast from "react-hot-toast";
 import { create } from "zustand";
-import { axiosInstance } from "../lib/axios";
-import type { Message, UserType } from "../util/types";
+import type { UserType, Message } from "../util/types";
 import { useAuthStore } from "./useAuthStore";
+import { QueryClient } from "@tanstack/react-query";
 
 interface IChatStore {
-  messages: Message[];
-  users: UserType[];
   selectedUser: UserType | null;
-  isUsersLoading: boolean;
-  isMessagesLoading: boolean;
 
-  getUsers: () => Promise<void>;
-  sendMessage: (messageData: any) => Promise<void>;
-  getMessages: (userId: string) => Promise<void>;
   setSelectedUser: (user: UserType | null) => void;
-  subScribeToMessages: () => void;
-  unSubScribeFromMessages: () => void;
+
+  subscribeToMessages: (queryClient: QueryClient) => void;
+  unsubscribeFromMessages: () => void;
 }
 
 export const useChatStore = create<IChatStore>((set, get) => ({
-  messages: [],
-  users: [],
   selectedUser: null,
-  isUsersLoading: false,
-  isMessagesLoading: false,
 
-  getUsers: async () => {
-    set({ isUsersLoading: true });
-    try {
-      const res = await axiosInstance.get<UserType[]>("/messages/users");
-      set({ users: res.data });
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to load users");
-    } finally {
-      set({ isUsersLoading: false });
-    }
-  },
+  setSelectedUser: (selectedUser) => set({ selectedUser }),
 
-  sendMessage: async (messageData) => {
-    const { selectedUser, messages } = get();
-
-    if (!selectedUser) {
-      toast.error("No user selected");
-      return;
-    }
-
-    try {
-      const res = await axiosInstance.post<Message>(
-        `/messages/send/${selectedUser._id}`,
-        messageData,
-      );
-
-      set({ messages: [...messages, res.data] });
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to send message");
-    }
-  },
-
-  getMessages: async (userId) => {
-    set({ isMessagesLoading: true });
-    try {
-      const res = await axiosInstance.get<Message[]>(`/messages/${userId}`);
-
-      set({ messages: res.data });
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to load messages");
-    } finally {
-      set({ isMessagesLoading: false });
-    }
-  },
-  subScribeToMessages: () => {
-    //gets current value, socket val won't
-    //change. if socket is updated
-
+  subscribeToMessages: (queryClient) => {
     const { selectedUser } = get();
     if (!selectedUser) return;
 
     const socket = useAuthStore.getState().socket;
 
-    socket?.on("newMessage", (newMessage) => {
-      const isMsgSentFromSelUser =
+    socket?.on("newMessage", (newMessage: Message) => {
+      const isFromSelectedUser =
         newMessage.senderId === selectedUser._id;
-      if (!isMsgSentFromSelUser) return;
 
-      set({ messages: [...get().messages, newMessage] });
+      if (!isFromSelectedUser) return;
+
+      // 🔥 Update TanStack cache instead of Zustand
+      queryClient.setQueryData<Message[]>(
+        ["messages", selectedUser._id],
+        (old = []) => [...old, newMessage]
+      );
     });
   },
-  unSubScribeFromMessages: () => {
-    const socket = useAuthStore.getState().socket;
 
+  unsubscribeFromMessages: () => {
+    const socket = useAuthStore.getState().socket;
     socket?.off("newMessage");
   },
-  setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));

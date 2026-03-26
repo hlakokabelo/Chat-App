@@ -7,37 +7,22 @@ import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../lib/utils";
 import { AvatarChat } from "./AvatarPlaceHolder.js";
+import { useMessages } from "../hooks/useChat.js";
 
 const ChatContainer = () => {
-  const {
-    subScribeToMessages,
-    unSubScribeFromMessages,
-    messages,
-    getMessages,
-    isMessagesLoading,
-    selectedUser,
-  } = useChatStore();
+  const { selectedUser } = useChatStore();
   const { authUser } = useAuthStore();
+  const { data: messages, isLoading: isMessagesLoading } = useMessages(
+    selectedUser?._id,
+  );
   const messageEndRef = useRef<HTMLDivElement>(null);
   const isMyMessage = (senderId: string): boolean => {
     return senderId === authUser?._id;
   };
 
   useEffect(() => {
-    if (selectedUser?._id) getMessages(selectedUser?._id);
-
-    //listens for new messages
-    subScribeToMessages();
-    return () => unSubScribeFromMessages();
-  }, [
-    selectedUser?._id,
-    subScribeToMessages,
-    unSubScribeFromMessages,
-    getMessages,
-  ]);
-  useEffect(() => {
     if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messageEndRef.current.scrollIntoView({ behavior: "instant" });
     }
   }, [messages]);
 
@@ -56,8 +41,8 @@ const ChatContainer = () => {
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length > 0 &&
-          messages.map((message, index) => {
+        {messages?.length&&messages?.length > 0 &&
+          messages?.map((message, index) => {
             const isLast = index === messages.length - 1;
 
             return (

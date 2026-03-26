@@ -2,13 +2,18 @@ import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Image, Send, X } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
+import { useSendMessage } from "../hooks/useChat";
 
 function MessageInput() {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { selectedUser } = useChatStore();
 
-  const { sendMessage } = useChatStore();
+  const { mutateAsync: sendMessageMutation, isPending } = useSendMessage(
+    selectedUser?._id,
+  );
+
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
   ) => {
@@ -33,13 +38,11 @@ function MessageInput() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleSendMessage = async (
-    e:any
-  ) => {
+  const handleSendMessage = async (e: any) => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
     try {
-      await sendMessage({
+      await sendMessageMutation({
         text: text.trim(),
         image: imagePreview,
       });
@@ -106,7 +109,7 @@ function MessageInput() {
           className="btn btn-sm btn-circle"
           disabled={!text.trim() && !imagePreview}
         >
-          <Send size={22} />
+          <Send className={isPending ? "animate-pulse" : ""} />
         </button>
       </form>
     </div>
