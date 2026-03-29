@@ -5,40 +5,30 @@ import { QueryClient } from "@tanstack/react-query";
 
 interface IChatStore {
   selectedUser: UserType | null;
-
   setSelectedUser: (user: UserType | null) => void;
-
   subscribeToMessages: (queryClient: QueryClient) => void;
   unsubscribeFromMessages: () => void;
+  lastMessage: Record<string, Message | null>;
 }
 
 export const useChatStore = create<IChatStore>((set, get) => ({
   selectedUser: null,
-
+  lastMessage: {},
   setSelectedUser: (selectedUser) => set({ selectedUser }),
 
   subscribeToMessages: (queryClient) => {
-    const { selectedUser } = get();
-    if (!selectedUser) return;
-
     const socket = useAuthStore.getState().socket;
 
-    socket?.on("newMessage", (newMessage: Message) => {
-      const isFromSelectedUser =
-        newMessage.senderId === selectedUser._id;
-
-      if (!isFromSelectedUser) return;
-
-      // 🔥 Update TanStack cache instead of Zustand
+    socket?.on("new-message", (newMessage: Message) => {
       queryClient.setQueryData<Message[]>(
-        ["messages", selectedUser._id],
-        (old = []) => [...old, newMessage]
+        ["messages", newMessage.senderId],
+        (old = []) => [...old, newMessage],
       );
     });
   },
 
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
-    socket?.off("newMessage");
+    socket?.off("new-message");
   },
 }));

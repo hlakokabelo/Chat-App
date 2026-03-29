@@ -14,7 +14,7 @@ export const useMessages = (userId?: string) => {
 
 export const useUsers = () => {
   return useQuery({
-    queryKey: ["users"],
+    queryKey: ["contacts"],
     queryFn: async () => {
       const res = await axiosInstance.get<UserType[]>("/messages/users");
       return res.data;

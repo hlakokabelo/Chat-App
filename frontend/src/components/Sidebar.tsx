@@ -6,14 +6,23 @@ import { useChatStore } from "../store/useChatStore";
 import { AvatarSiderBar } from "./AvatarPlaceHolder";
 import { useUsers } from "../hooks/useChat";
 import { Users } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import type { Message } from "../util/types";
+import SearchUsers from "./SearchUsers";
 
 const Sidebar = () => {
-  const { selectedUser, setSelectedUser } = useChatStore();
+  const { selectedUser, setSelectedUser, lastMessage } = useChatStore();
   const { data: users, isLoading: isUsersLoading } = useUsers();
 
   const { onlineUsers } = useAuthStore();
 
+  const queryClient = useQueryClient();
+
   if (isUsersLoading) return <SidebarSkeleton />;
+
+  const getLastMessage = (userId: string): Message | null => {
+    return lastMessage[userId] || null;
+  };
 
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
@@ -23,9 +32,7 @@ const Sidebar = () => {
             <Users className="size-6 hidden sm:block" />
             <span className="font-medium hidden lg:block">Contacts</span>
           </div>
-          <button title="add new contact">
-            <MdPersonAddAlt1 size={25} />
-          </button>
+          <SearchUsers />
         </div>
       </div>
 

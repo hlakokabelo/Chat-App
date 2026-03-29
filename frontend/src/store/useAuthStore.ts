@@ -3,6 +3,7 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import type { UserType } from "../util/types";
 import { io, type Socket } from "socket.io-client";
+import { useChatStore } from "./useChatStore";
 interface IUseAuthStore {
   authUser: UserType | null;
   isLoggingIn: boolean;
@@ -75,6 +76,7 @@ export const useAuthStore = create<IUseAuthStore>((set, get) => ({
       //connect socket
       get().connectSocket();
     } catch (error: any) {
+      console.log("Login error", error);
       toast.error(error.response?.data?.message || "Login failed");
     } finally {
       set({ isLoggingIn: false });
@@ -124,6 +126,10 @@ export const useAuthStore = create<IUseAuthStore>((set, get) => ({
   },
   disConnectSocket: () => {
     const { socket } = get();
-    if (socket?.connected) socket.disconnect();
+    if (socket?.connected) {
+      const { unsubscribeFromMessages } = useChatStore();
+      unsubscribeFromMessages();
+      socket.disconnect();
+    }
   },
 }));
