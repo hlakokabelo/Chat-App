@@ -1,11 +1,10 @@
-import * as React from "react";
 import type { UserType } from "../util/types";
 
 export interface IAvatarPlaceHolderProps {
   user: UserType;
 }
 
-function getInitials(name: string) {
+export function getInitials(name: string) {
   return name
     .trim()
     .split(/\s+/) // split by spaces (handles multiple spaces too)
