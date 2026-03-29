@@ -22,6 +22,8 @@ export default function SearchUsers() {
       return;
     }
 
+
+    //debounce search by 300ms
     setTimeout(async () => {
       const res = await axiosInstance.post(`/users/search?q=${value}`);
       setResults(res.data);

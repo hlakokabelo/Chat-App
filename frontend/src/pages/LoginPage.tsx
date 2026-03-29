@@ -3,8 +3,6 @@ import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
-import { useChatStore } from "../store/useChatStore";
-import { useQueryClient } from "@tanstack/react-query";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,17 +10,11 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-  const queryClient = useQueryClient();
-
   const { login, isLoggingIn: isLogginIn } = useAuthStore();
-  const { subscribeToMessages } = useChatStore();
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await login(formData);
-    subscribeToMessages(queryClient);
-
-    alert("Login successful, subscribing to messages...");
+    await login(formData);
   };
 
   return (

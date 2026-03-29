@@ -12,14 +12,27 @@ import SignedInLayout from "./layout/SignedInLayout.js";
 import SignedOutLayout from "./layout/SignedOutLayout.js";
 import { Toaster } from "react-hot-toast";
 import { useThemeStore } from "./store/useThemeStore.js";
+import { useChatStore } from "./store/useChatStore.js";
+import { useQueryClient } from "@tanstack/react-query";
 
 function App() {
-  const { authUser, onlineUsers, isCheckingAuth, checkAuth } = useAuthStore();
+  const { authUser, socket, onlineUsers, isCheckingAuth, checkAuth } =
+    useAuthStore();
   const { theme } = useThemeStore();
+  const queryClient = useQueryClient();
+  const { subscribeToMessages, unsubscribeFromMessages } = useChatStore();
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
+  useEffect(() => {
+    subscribeToMessages(queryClient);
+
+    return () => {
+      unsubscribeFromMessages();
+    };
+  }, [socket]);
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex justify-center min-h-screen">

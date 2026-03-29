@@ -5,9 +5,9 @@ import ChatHeader from "./ChatHeader.js";
 import MessageInput from "./MessageInput.js";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
-import { formatMessageTime } from "../lib/utils";
 import { AvatarChat } from "./AvatarPlaceHolder.js";
 import { useMessages } from "../hooks/useChat.js";
+import { formatTimeStamp } from "../util/formatTimeStamp.js";
 
 const ChatContainer = () => {
   const { selectedUser } = useChatStore();
@@ -41,7 +41,7 @@ const ChatContainer = () => {
       <ChatHeader />
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages?.length &&
+        {messages &&
           messages?.length > 0 &&
           messages?.map((message, index) => {
             const isLast = index === messages.length - 1;
@@ -58,8 +58,7 @@ const ChatContainer = () => {
                 </div>
                 <div className="chat-header mb-1">
                   <time className={`"text-xs opacity-50 ml-1`}>
-                    {message?.createdAt &&
-                      formatMessageTime(message?.createdAt)}
+                    {message?.createdAt && formatTimeStamp(message?.createdAt)}
                   </time>
                 </div>
 

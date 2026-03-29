@@ -1,12 +1,10 @@
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
-import { MdPersonAddAlt1 } from "react-icons/md";
 
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import { AvatarSiderBar } from "./AvatarPlaceHolder";
 import { useUsers } from "../hooks/useChat";
 import { Users } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
 import type { Message } from "../util/types";
 import SearchUsers from "./SearchUsers";
 
@@ -15,8 +13,6 @@ const Sidebar = () => {
   const { data: users, isLoading: isUsersLoading } = useUsers();
 
   const { onlineUsers } = useAuthStore();
-
-  const queryClient = useQueryClient();
 
   if (isUsersLoading) return <SidebarSkeleton />;
 
@@ -61,9 +57,7 @@ const Sidebar = () => {
             <div className="hidden lg:block text-left min-w-0">
               <div className="font-medium truncate">{user.fullName}</div>
               <div className="text-sm text-zinc-400">
-                {user?._id && onlineUsers.includes(user?._id)
-                  ? "Online"
-                  : "Offline"}
+                {user?._id && getLastMessage(user._id)?.text}
               </div>
             </div>
           </button>

@@ -24,6 +24,12 @@ export const useChatStore = create<IChatStore>((set, get) => ({
         ["messages", newMessage.senderId],
         (old = []) => [...old, newMessage],
       );
+      set({
+        lastMessage: {
+          ...get().lastMessage,
+          [newMessage.senderId]: newMessage,
+        },
+      });
     });
   },
 
