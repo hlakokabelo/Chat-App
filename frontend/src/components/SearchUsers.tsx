@@ -3,6 +3,7 @@ import { MdPersonAddAlt1 } from "react-icons/md";
 import { axiosInstance } from "../lib/axios";
 import type { UserType } from "../util/types";
 import { getInitials } from "./AvatarPlaceHolder";
+import UserDetail from "./UserDetail";
 
 export default function SearchUsers() {
   const [open, setOpen] = useState(false);
@@ -32,25 +33,12 @@ export default function SearchUsers() {
     }, 300);
   };
 
-  const formatName = (name: string | undefined) => {
-    if (!name) return "";
-    const parts = name.split(" ");
-
-    let finalName = "";
-    parts.forEach((part, index) => {
-      parts[index] = part.charAt(0).toUpperCase() + part.slice(1);
-      finalName += parts[index] + " ";
-    });
-
-    return finalName.trim();
-  };
-
   return (
     <div className="relative search-users-dropdown">
       {/* Trigger Button */}
       <button
         title="add new contact"
-        className="cursor-pointer transition-transform hover:scale-110 active:scale-95 text-gray-600 hover:text-blue-500"
+        className="cursor-pointer transition-transform hover:scale-110 active:scale-95 text-primary hover:text-secondary "
         onClick={() => {
           setOpen((prev) => !prev);
           setSelectedUser(null);
@@ -61,73 +49,97 @@ export default function SearchUsers() {
 
       <div
         hidden={!selectedUser}
-        className="z-60 flex-col items-center flex absolute left-0 rounded-2xl w-96 bg-white shadow-2xl border border-gray-200 text-gray-800 text-sm px-6 py-5 top-10"
+        className="z-60 flex-col items-center flex left-15 top-0 absolute "
       >
-        <p className="text-center text-2xl font-semibold mb-2 text-gray-800">
-          {formatName(selectedUser?.fullName)}
-        </p>
-        {selectedUser?.profilePic ? (
-          <img
-            src={selectedUser.profilePic}
-            alt={selectedUser.fullName}
-            className="w-52 h-52 m-4 rounded-full object-cover border-4 border-blue-500 shadow-lg"
+        {selectedUser && (
+          <UserDetail
+            onClose={() => setSelectedUser(null)}
+            className="search-users-dropdown
+            text-center w-96 rounded-3xl border bg-base-300 border-primary"
+            user={selectedUser!}
           />
-        ) : (
-          <div className="w-32 h-32 m-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-5xl text-white font-semibold shadow-lg">
-            {getInitials(selectedUser?.fullName || "")}
-          </div>
         )}
-
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md mt-2">
-          Add to Contacts
-        </button>
       </div>
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute top-10 left-0 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden">
-          <div className="p-4 border-b border-gray-200">
+        <div 
+        hidden={!!selectedUser}
+        className="absolute top-10 left-0 w-80 rounded-xl shadow-xl border z-50 overflow-hidden bg-base-100 border-base-300">
+          {/* Search Input Section */}
+          <div className="p-4 border-b border-base-200 bg-base-100">
             <input
               type="text"
               placeholder="Search users..."
               value={query}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full p-2.5 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+              className="w-full p-2.5 rounded-lg bg-base-200 border border-base-300 text-base-content placeholder:text-base-content/50 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
             />
           </div>
 
+          {/* Results Section */}
           <div className="max-h-80 overflow-y-auto">
             {results.length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-8">
-                No users found
-              </p>
-            ) : (
-              results.map((user) => (
-                <div
-                  key={user._id}
-                  onClick={() => {
-                    setSelectedUser(user);
-                    setOpen(false);
-                  }}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 cursor-pointer transition-colors duration-150 border-b border-gray-100 last:border-0"
-                >
-                  {user?.profilePic ? (
-                    <img
-                      src={user.profilePic}
-                      alt={user.fullName}
-                      className="w-10 h-10 rounded-full object-cover"
+              <div className="flex flex-col items-center justify-center py-12 px-4">
+                <div className="w-12 h-12 rounded-full bg-base-200 flex items-center justify-center mb-3">
+                  <svg
+                    className="w-6 h-6 text-base-content/40"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-medium shadow-sm">
-                      {getInitials(user.fullName || "")}
-                    </div>
-                  )}
-
-                  <span className="text-gray-700 text-sm font-medium hover:text-blue-600 transition-colors">
-                    {user.fullName}
-                  </span>
+                  </svg>
                 </div>
-              ))
+                <p className="text-sm text-base-content/60 text-center">
+                  No users found
+                </p>
+                <p className="text-xs text-base-content/40 text-center mt-1">
+                  Try a different name
+                </p>
+              </div>
+            ) : (
+              results.map((user) => {
+                return (
+                  <div
+                    key={user._id}
+                    onClick={() => {
+                      setSelectedUser(user);
+                    }}
+                    className="group flex items-center gap-3 px-4 py-3 cursor-pointer transition-all duration-200 border-b border-base-200 last:border-0 hover:bg-primary/5"
+                  >
+                    {/* Avatar */}
+                    {user?.avatarUrl ? (
+                      <img
+                        src={user.avatarUrl}
+                        alt={user.name}
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary/30 transition-all"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-content text-sm font-medium shadow-sm">
+                        {getInitials(user.name || "")}
+                      </div>
+                    )}
+
+                    {/* User Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-base-content font-medium group-hover:text-primary transition-colors truncate">
+                        {user.name}
+                      </p>
+                      {user.email && (
+                        <p className="text-xs text-base-content/50 truncate">
+                          {user.email}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
             )}
           </div>
         </div>

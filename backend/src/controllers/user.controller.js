@@ -5,7 +5,7 @@ const searcUsers = async (req, res) => {
     const { q } = req.query;
 
     const user = await User.find({
-      fullName: new RegExp(q,'i'),
+      name: new RegExp(q,'i'),
     }).select("-password");
 
     res.status(200).json( user );

@@ -13,7 +13,7 @@ export function getInitials(name: string) {
     .join("")
     .toUpperCase();
 }
-const InitialsComponent = ({ name }: { name: string }) => {
+export const InitialsComponent = ({ name }: { name: string }) => {
   return (
     <div className="avatar avatar-placeholder">
       <div className="bg-neutral text-neutral-content w-12 rounded-full">
@@ -24,23 +24,23 @@ const InitialsComponent = ({ name }: { name: string }) => {
 };
 
 export function AvatarChat({ user }: IAvatarPlaceHolderProps) {
-  return user.profilePic ? (
+  return user.avatarUrl ? (
     <div className="size-10 rounded-full border">
-      <img src={user?.profilePic || "/avatar.png"} alt="profile pic" />
+      <img src={user?.avatarUrl || "/avatar.png"} alt="profile pic" />
     </div>
   ) : (
-    <InitialsComponent name={user.fullName} />
+    <InitialsComponent name={user.name} />
   );
 }
 
 export function AvatarSiderBar({ user }: IAvatarPlaceHolderProps) {
-  return user.profilePic ? (
+  return user.avatarUrl ? (
     <img
-      src={user.profilePic || "/avatar.png"}
-      alt={user?.fullName}
+      src={user.avatarUrl || "/avatar.png"}
+      alt={user?.name}
       className="size-12 object-cover rounded-full"
     />
   ) : (
-    <InitialsComponent name={user.fullName} />
+    <InitialsComponent name={user.name} />
   );
 }

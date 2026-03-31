@@ -9,11 +9,12 @@ export type Message = {
 };
 
 export type UserType = {
+  username?: string;
   _id?: string; // optional because Mongo creates it
   email: string;
-  fullName: string;
+  name: string;
   password: string;
-  profilePic?: string; // optional because it has a default
+  avatarUrl?: string; // optional because it has a default
   createdAt?: string;
   updatedAt?: string;
 };

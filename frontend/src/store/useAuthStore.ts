@@ -14,13 +14,13 @@ interface IUseAuthStore {
 
   checkAuth: () => Promise<void>;
   signup: (data: {
-    fullName: string;
+    name: string;
     email: string;
     password: string;
   }) => Promise<void>;
   login: (data: { email: string; password: string }) => Promise<void>;
   logout: () => Promise<void>;
-  updateProfile: (data: { profilePic: string }) => Promise<void>;
+  updateProfile: (data: { avatarUrl: string }) => Promise<void>;
   connectSocket: () => void;
   disConnectSocket: () => void;
   socket: Socket | null;

@@ -18,7 +18,7 @@ const ProfilePage = () => {
     reader.onload = async () => {
       const base64Image = reader.result as string;
       setSelectedImg(base64Image);
-      await updateProfile({ profilePic: base64Image });
+      await updateProfile({ avatarUrl: base64Image });
     };
   };
 
@@ -36,7 +36,7 @@ const ProfilePage = () => {
           <div className="flex flex-col items-center gap-4">
             <div className="relative">
               <img
-                src={selectedImg || authUser?.profilePic || "/avatar.png"}
+                src={selectedImg || authUser?.avatarUrl || "/avatar.png"}
                 alt="Profile"
                 onClick={() =>
                   setImgSize((prev) =>
@@ -80,7 +80,7 @@ const ProfilePage = () => {
                 Full Name
               </div>
               <p className="px-4 py-2.5 bg-base-200 rounded-lg border">
-                {authUser?.fullName}
+                {authUser?.name}
               </p>
             </div>
 
