@@ -5,7 +5,7 @@ interface ITheme {
   setTheme: (theme: string) => void;
 }
 export const useThemeStore = create<ITheme>((set) => ({
-  theme: localStorage.getItem("chat-theme") || "coffee",
+  theme: localStorage.getItem("chat-theme") || "dim",
   setTheme: (theme) => {
     localStorage.setItem("chat-theme", theme);
     set({ theme });
