@@ -5,10 +5,10 @@ const searcUsers = async (req, res) => {
     const { q } = req.query;
 
     const user = await User.find({
-      name: new RegExp(q,'i'),
+      name: new RegExp(q, "i"),
     }).select("-password");
 
-    res.status(200).json( user );
+    res.status(200).json(user);
   } catch (error) {
     console.error("Error in searchUsers controller:", error);
     res.status(500).json({ error: "Internal server error" });

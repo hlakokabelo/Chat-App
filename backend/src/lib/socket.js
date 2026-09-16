@@ -35,10 +35,17 @@ io.on("connection", (socket) => {
     //sending the keys, which are userIds
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-    console.log("-".repeat(25),"Online users:",Object.keys(userSocketMap).length)
+    console.log(
+      "-".repeat(25),
+      "Online users:",
+      Object.keys(userSocketMap).length,
+    );
   });
-    console.log("-".repeat(25),"Online users:",Object.keys(userSocketMap).length)
-
+  console.log(
+    "-".repeat(25),
+    "Online users:",
+    Object.keys(userSocketMap).length,
+  );
 });
 
 export { io, app, server };

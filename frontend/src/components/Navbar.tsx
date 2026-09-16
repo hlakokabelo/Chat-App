@@ -17,8 +17,9 @@ const Navbar = () => {
               className="flex items-center gap-2.5 hover:opacity-80 transition-all"
             >
               <div className="size-9 rounded-lg flex items-center justify-center">
-                <ChatIcon className="dark:text-white" /></div>
-              <h1 className="text-lg font-bold " >{appName}</h1>
+                <ChatIcon className="dark:text-white" />
+              </div>
+              <h1 className="text-lg font-bold ">{appName}</h1>
             </Link>
           </div>
 

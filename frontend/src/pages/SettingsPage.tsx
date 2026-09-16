@@ -3,8 +3,13 @@ import { Send } from "lucide-react";
 import { useThemeStore } from "../store/useThemeStore";
 
 const PREVIEW_MESSAGES = [
-  { time:"12:00",id: 1, content: "Hey! How's it going?", isSent: false },
-  { time:"14:00",id: 2, content: "I'm doing great! Just working on some new features.", isSent: true },
+  { time: "12:00", id: 1, content: "Hey! How's it going?", isSent: false },
+  {
+    time: "14:00",
+    id: 2,
+    content: "I'm doing great! Just working on some new features.",
+    isSent: true,
+  },
 ];
 
 const SettingsPage = () => {
@@ -15,7 +20,9 @@ const SettingsPage = () => {
       <div className="space-y-6">
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-semibold">Theme</h2>
-          <p className="text-sm text-base-content/70">Choose a theme for your chat interface</p>
+          <p className="text-sm text-base-content/70">
+            Choose a theme for your chat interface
+          </p>
         </div>
 
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
@@ -28,7 +35,10 @@ const SettingsPage = () => {
               `}
               onClick={() => setTheme(t)}
             >
-              <div className="relative h-8 w-full rounded-md overflow-hidden" data-theme={t}>
+              <div
+                className="relative h-8 w-full rounded-md overflow-hidden"
+                data-theme={t}
+              >
                 <div className="absolute inset-0 grid grid-cols-4 gap-px p-1">
                   <div className="rounded bg-primary"></div>
                   <div className="rounded bg-secondary"></div>

@@ -39,7 +39,9 @@ const ContactCard: React.FC<ContactCardProps> = ({
 
       {/* Media Section */}
       <div className="mt-6">
-        <p className="text-gray-600 mb-2">Media, links and docs ({mediaCount})</p>
+        <p className="text-gray-600 mb-2">
+          Media, links and docs ({mediaCount})
+        </p>
         <div className="flex gap-2">
           {mediaPreviews.map((src, index) => (
             <img

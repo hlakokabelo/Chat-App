@@ -74,7 +74,7 @@ const Sidebar = () => {
 
   const filteredByChats = users
     ? users.filter((user) =>
-        user.name.toLowerCase().includes(activeTab.charAt(0).toLowerCase() ),
+        user.name.toLowerCase().includes(activeTab.charAt(0).toLowerCase()),
       )
     : [];
   const filteredUsers = filteredByChats

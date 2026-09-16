@@ -11,7 +11,6 @@ export const useMessages = (userId?: string) => {
   });
 };
 
-
 export const useUsers = () => {
   return useQuery({
     queryKey: ["contacts"],
@@ -21,7 +20,6 @@ export const useUsers = () => {
     },
   });
 };
-
 
 export const useSendMessage = (userId?: string) => {
   const queryClient = useQueryClient();

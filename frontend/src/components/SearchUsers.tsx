@@ -63,9 +63,10 @@ export default function SearchUsers() {
 
       {/* Dropdown */}
       {open && (
-        <div 
-        hidden={!!selectedUser}
-        className="absolute top-10 left-0 w-80 rounded-xl shadow-xl border z-50 overflow-hidden bg-base-100 border-base-300">
+        <div
+          hidden={!!selectedUser}
+          className="absolute top-10 left-0 w-80 rounded-xl shadow-xl border z-50 overflow-hidden bg-base-100 border-base-300"
+        >
           {/* Search Input Section */}
           <div className="p-4 border-b border-base-200 bg-base-100">
             <input

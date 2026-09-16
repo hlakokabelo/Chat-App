@@ -29,7 +29,6 @@ const ChatContainer = () => {
     }
   }, [messages]);
 
-
   useEffect(() => {
     // Close user detail sidebar when switching to a different chat
     setShowUserDetail(false);
@@ -110,7 +109,7 @@ const ChatContainer = () => {
           />
           <div className="fixed right-0 top-0 h-full z-50 lg:relative lg:z-auto">
             <UserDetail
-            className="border-l-primary border-2 rounded-2xl border-transparent"
+              className="border-l-primary border-2 rounded-2xl border-transparent"
               user={selectedUser!}
               onClose={() => setShowUserDetail(false)}
               isMobile={false}

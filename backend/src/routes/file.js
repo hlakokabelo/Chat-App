@@ -1,6 +1,4 @@
-import expres from "express"
-const router = expres.Router()
+import expres from "express";
+const router = expres.Router();
 
-
-
-export default router
+export default router;

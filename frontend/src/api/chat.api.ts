@@ -6,20 +6,15 @@ export const fetchUsers = async (): Promise<UserType[]> => {
   return res.data;
 };
 
-export const fetchMessages = async (
-  userId: string
-): Promise<Message[]> => {
+export const fetchMessages = async (userId: string): Promise<Message[]> => {
   const res = await axiosInstance.get(`/messages/${userId}`);
   return res.data;
 };
 
 export const sendMessage = async (
   userId: string,
-  messageData: any
+  messageData: any,
 ): Promise<Message> => {
-  const res = await axiosInstance.post(
-    `/messages/send/${userId}`,
-    messageData
-  );
+  const res = await axiosInstance.post(`/messages/send/${userId}`, messageData);
   return res.data;
 };

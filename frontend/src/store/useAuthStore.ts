@@ -60,7 +60,9 @@ export const useAuthStore = create<IUseAuthStore>((set, get) => ({
       //connect socket
       get().connectSocket();
     } catch (error: any) {
-      toast.error(error.response?.data?.message|| error?.message || "Signup failed");
+      toast.error(
+        error.response?.data?.message || error?.message || "Signup failed",
+      );
     } finally {
       set({ isSigningUp: false });
     }
@@ -78,7 +80,7 @@ export const useAuthStore = create<IUseAuthStore>((set, get) => ({
     } catch (error: any) {
       console.log("Login error", error);
       toast.error(
-        error.response?.data?.message|| error?.message  || "Login failed",
+        error.response?.data?.message || error?.message || "Login failed",
       );
     } finally {
       set({ isLoggingIn: false });
@@ -94,7 +96,9 @@ export const useAuthStore = create<IUseAuthStore>((set, get) => ({
       //disconnect socket
       get().disConnectSocket();
     } catch (error: any) {
-      toast.error(error.response?.data?.message|| error?.message || "Logout failed");
+      toast.error(
+        error.response?.data?.message || error?.message || "Logout failed",
+      );
     }
   },
 
@@ -108,7 +112,9 @@ export const useAuthStore = create<IUseAuthStore>((set, get) => ({
       set({ authUser: res.data });
       toast.success("Profile updated");
     } catch (error: any) {
-      toast.error(error.response?.data?.message|| error?.message || "Update failed");
+      toast.error(
+        error.response?.data?.message || error?.message || "Update failed",
+      );
     } finally {
       set({ isUpdatingProfile: false });
     }

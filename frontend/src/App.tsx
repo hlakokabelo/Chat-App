@@ -35,9 +35,7 @@ function App() {
   }, [socket]);
   if (isCheckingAuth && !authUser) {
     return (
-      <div
-        className="flex justify-center items-center  w-full min-h-full"
-      >
+      <div className="flex justify-center items-center  w-full min-h-full">
         <span className="loading mt-[50vh] loading-spinner loading-xl"></span>
       </div>
     );

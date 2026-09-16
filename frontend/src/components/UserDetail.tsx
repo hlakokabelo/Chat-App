@@ -1,4 +1,3 @@
-
 import { getInitials } from "./AvatarPlaceHolder.js";
 import { IoMail, IoCalendar, IoInformation, IoClose } from "react-icons/io5";
 import { formatTimeStamp } from "../util/formatTimeStamp.js";
@@ -17,7 +16,6 @@ const UserDetail = ({
   user,
   className = "",
 }: UserDetailProps) => {
-
   if (!user) {
     return (
       <div
